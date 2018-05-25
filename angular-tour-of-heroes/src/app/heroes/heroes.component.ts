@@ -9,7 +9,14 @@ import { HeroService } from '../hero.service';
 })
 export class HeroesComponent implements OnInit {
   heroes: Hero[];
-  
+
+  constructor(private heroService: HeroService) { } //inject service into component
+
+  ngOnInit() {
+    //code here gets called after constructor - best practice to place init code here and not in ctor
+    this.getHeroes();
+  }
+
   getHeroes(): void {
     this.heroService.getHeroes()
     .subscribe(heroes => {
@@ -17,11 +24,18 @@ export class HeroesComponent implements OnInit {
     });
   }
 
-  constructor(private heroService: HeroService) { } //inject service into component
+  add(name: string): void {
+    name = name.trim();
+    if (!name) { return; }
+    this.heroService.addHero({name} as Hero)
+      .subscribe((hero) => {
+        this.heroes.push(hero);
+      });
+  }
 
-  ngOnInit() {
-    //code here gets called after constructor - best practice to place init code here and not in ctor
-    this.getHeroes();
+  delete(hero: Hero): void {
+    this.heroes = this.heroes.filter(h => h !== hero); //filter out hero locally
+    this.heroService.deleteHero(hero).subscribe();
   }
 
 }
