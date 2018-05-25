@@ -9,7 +9,6 @@ import { HeroService } from '../hero.service';
 })
 export class HeroesComponent implements OnInit {
   heroes: Hero[];
-  selectedHero: Hero;
   
   getHeroes(): void {
     this.heroService.getHeroes()
@@ -17,16 +16,12 @@ export class HeroesComponent implements OnInit {
       this.heroes = heroes;
     });
   }
-  onSelect(hero: Hero): void {
-    this.selectedHero = hero;
-  }
 
   constructor(private heroService: HeroService) { } //inject service into component
 
   ngOnInit() {
     //code here gets called after constructor - best practice to place init code here and not in ctor
     this.getHeroes();
-
   }
 
 }
